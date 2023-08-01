@@ -1,8 +1,8 @@
 package testVagrant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+
+import java.util.*;
+
 public class RecentlyPlayedSongsStore {
    /* OVERVIEW
     Create an in-memory store for recently played songs that can accommodate N songs per user, with a fixed initial capacity. This store must have the capability to store a list of song-user pairs, with each song linked to a user. It should also be able to fetch recently played songs based on the user and eliminate the least recently played songs when the store becomes full.
@@ -15,7 +15,7 @@ public class RecentlyPlayedSongsStore {
     When S1 song is played -> S4,S2,S1
     */
     private int capacity;
-    private Map<String,  List<String>> recentPlayedSongs;
+    private Map<String,  LinkedList<String>> recentPlayedSongs;
     public static void main(String[] args) {
         int initialCapacity = 3;
         RecentlyPlayedSongsStore store = new RecentlyPlayedSongsStore(initialCapacity);
@@ -24,7 +24,9 @@ public class RecentlyPlayedSongsStore {
         store.addRecentlyPlayedSong("User1", "S1");
         store.addRecentlyPlayedSong("User1", "S2");
         store.addRecentlyPlayedSong("User1", "S3");
+
         System.out.println("User1's Recently Played Songs: " + store.getRecentlyPlayedSongs("User1"));
+
 
         // User 1 - Plays song S4
         store.addRecentlyPlayedSong("User1", "S4");
@@ -44,16 +46,16 @@ public class RecentlyPlayedSongsStore {
 
     public RecentlyPlayedSongsStore(int capacity) {
         this.capacity = capacity;
-        this.recentPlayedSongs = new HashMap<String,  List<String>>();
+        this.recentPlayedSongs = new HashMap<>();
     }
 
 
     public void addRecentlyPlayedSong(String user, String song) {
         if (!recentPlayedSongs.containsKey(user)) {
-            recentPlayedSongs.put(user,new ArrayList<String>() );
+            recentPlayedSongs.put(user,new LinkedList<>() );
         }
 
-        List<String> songsList = recentPlayedSongs.get(user);
+        LinkedList<String> songsList = recentPlayedSongs.get(user);
 
         // Remove the song if it already exists in the list to update its recentness
         songsList.remove(song);
@@ -63,10 +65,10 @@ public class RecentlyPlayedSongsStore {
 
         // Check if the list has exceeded the capacity, remove the least recently played song
         if (songsList.size() > capacity) {
-            songsList.remove(songsList.size() - 1);
+            songsList.removeLast();
         }
     }
-    public List<String> getRecentlyPlayedSongs(String user) {
-        return recentPlayedSongs.getOrDefault(user, new ArrayList<String>());
+    public LinkedList<String> getRecentlyPlayedSongs(String user) {
+        return recentPlayedSongs.getOrDefault(user,new LinkedList<>());
     }
 }

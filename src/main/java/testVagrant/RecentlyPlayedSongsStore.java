@@ -14,6 +14,8 @@ public class RecentlyPlayedSongsStore {
     When S2 song is played -> S3,S4,S2
     When S1 song is played -> S4,S2,S1
     */
+   //Time Complexity = O(N)
+   //Space Complexity = O(U*N) where U is users
     private int capacity;
     private Map<String,  LinkedList<String>> recentPlayedSongs;
     public static void main(String[] args) {
